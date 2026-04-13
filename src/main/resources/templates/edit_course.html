@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Course</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+    body { background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); margin: 0; padding: 0; }
+    header { background: linear-gradient(90deg, #16a085, #1abc9c); padding: 20px; color: white; display: flex; justify-content: space-between; align-items: center; }
+    header h1 { margin: 0; font-size: 28px; }
+    header a { background-color: #e74c3c; padding: 8px 18px; border-radius: 5px; color: white; text-decoration: none; font-weight: bold; }
+    header a:hover { background-color: #c0392b; }
+    .container { max-width: 600px; margin: 40px auto; background: white; padding: 25px; border-radius: 10px; box-shadow: 0px 4px 15px rgba(0,0,0,0.1); }
+    h2 { text-align: center; margin-bottom: 20px; color: #16a085; }
+    label { display: block; margin-top: 10px; font-weight: bold; color: #555; }
+    input[type="text"], input[type="number"], textarea { width: 100%; padding: 10px; margin-top: 5px; border: 2px solid #e1e5ee; border-radius: 5px; font-size: 14px; transition: all 0.3s ease; outline: none; }
+    input:focus, textarea:focus { border-color: #667eea; box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); }
+    textarea { resize: vertical; min-height: 80px; }
+    button { margin-top: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px 18px; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; width: 100%; transition: all 0.3s ease; }
+    button:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(118, 75, 162, 0.4); }
+  </style>
+</head>
+<body>
+<header>
+  <h1><i class="fas fa-edit"></i> Edit Course</h1>
+  <a href="/admin/dashboard">⬅ Back to Dashboard</a>
+</header>
+
+<div class="container">
+  <h2>Update Course Details</h2>
+  <form th:action="@{/admin/update-course}" th:object="${course}" method="post">
+    <input type="hidden" th:field="*{id}" />
+
+    <label>Course Code:</label>
+    <input type="text" th:field="*{courseCode}" required />
+
+    <label>Title:</label>
+    <input type="text" th:field="*{title}" required />
+
+    <label>Description:</label>
+    <textarea th:field="*{description}" required></textarea>
+
+    <label>Seats:</label>
+    <input type="number" th:field="*{seats}" min="1" required />
+
+    <label>Program:</label>
+    <select th:field="*{program.id}" required>
+      <option value="">-- Select Program --</option>
+      <option th:each="prog : ${programs}" th:value="${prog.id}" th:text="${prog.programName}"></option>
+    </select>
+
+    <button type="submit"><i class="fas fa-save"></i> Update Course</button>
+  </form>
+</div>
+</body>
+</html>

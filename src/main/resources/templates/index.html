@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Course Registration Management System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        p {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        .role-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            width: 100%;
+            padding: 15px;
+            margin: 15px 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(118, 75, 162, 0.3);
+        }
+
+        .role-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(118, 75, 162, 0.4);
+        }
+
+        .role-btn i {
+            font-size: 1.3rem;
+        }
+
+        .student-btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.3);
+        }
+
+        .staff-btn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            box-shadow: 0 5px 15px rgba(245, 87, 108, 0.3);
+        }
+
+        .admin-btn {
+            background: linear-gradient(135deg, #5ee7df 0%, #b490ca 100%);
+            box-shadow: 0 5px 15px rgba(180, 144, 202, 0.3);
+        }
+
+        .footer {
+            margin-top: 30px;
+            color: #888;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="logo">
+        <i class="fas fa-graduation-cap"></i>
+    </div>
+    <h1>Welcome to CRMS</h1>
+    <p>Select your role to continue</p>
+
+    <!-- Student Login -->
+    <a href="/login?role=student" class="role-btn student-btn">
+        <i class="fas fa-user-graduate"></i>
+        Student Login
+    </a>
+
+    <!-- Staff Login -->
+    <a href="/login?role=staff" class="role-btn staff-btn">
+        <i class="fas fa-chalkboard-teacher"></i>
+        Staff Login
+    </a>
+
+    <!-- Admin Login -->
+    <a href="/login?role=admin" class="role-btn admin-btn">
+        <i class="fas fa-user-shield"></i>
+        Admin Login
+    </a>
+
+    <div class="footer">
+        &copy; 2023 Course Registration Management System
+    </div>
+</div>
+</body>
+</html>

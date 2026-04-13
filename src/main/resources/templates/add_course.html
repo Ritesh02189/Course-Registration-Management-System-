@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Add Course</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh; padding: 20px; display: flex; justify-content: center; align-items: center; }
+        .form-container { background: white; padding: 30px; border-radius: 15px; max-width: 600px; width: 100%; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        h2 { color: #2c3e50; margin-bottom: 25px; text-align: center; font-weight: 600; }
+        .form-group { margin-bottom: 20px; }
+        label { font-weight: 600; color: #2c3e50; display: block; margin-bottom: 8px; }
+        input, select, textarea { width: 100%; padding: 12px 15px; border: 2px solid #e1e5ee; border-radius: 8px; font-size: 1rem; transition: all 0.3s ease; outline: none; }
+        input:focus, select:focus, textarea:focus { border-color: #667eea; box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); }
+        textarea { min-height: 100px; resize: vertical; }
+        button { width: 100%; padding: 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: 500; cursor: pointer; transition: all 0.3s ease; margin-top: 10px; }
+        button:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(118, 75, 162, 0.4); }
+        .back-link { display: block; text-align: center; margin-top: 20px; color: #667eea; text-decoration: none; font-weight: 500; }
+        .back-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+<div class="form-container">
+    <h2><i class="fas fa-plus-circle"></i> Add New Course</h2>
+    <form th:action="@{/admin/course/save}" th:object="${course}" method="post">
+        <div class="form-group">
+            <label for="courseCode">Course Code:</label>
+            <input type="text" id="courseCode" th:field="*{courseCode}" placeholder="e.g., CS101" required>
+        </div>
+
+        <div class="form-group">
+            <label for="title">Course Title:</label>
+            <input type="text" id="title" th:field="*{title}" placeholder="e.g., Introduction to Programming" required>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea id="description" th:field="*{description}" placeholder="Course description..." required></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="seats">Available Seats:</label>
+            <input type="number" id="seats" th:field="*{seats}" min="1" placeholder="e.g., 30" required>
+        </div>
+
+        <div class="form-group">
+            <label for="program">Program:</label>
+            <select id="program" th:field="*{program.id}" required>
+                <option value="">-- Select Program --</option>
+                <option th:each="prog : ${programs}" th:value="${prog.id}" th:text="${prog.programName}"></option>
+            </select>
+        </div>
+
+        <button type="submit"><i class="fas fa-save"></i> Add Course</button>
+    </form>
+    <a href="/admin/dashboard" class="back-link"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Registered Students</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background: linear-gradient(135deg, #f0f4f8 0%, #e6f7ff 100%); margin: 0; padding: 0; }
+        header { background: linear-gradient(90deg, #f39c12, #d68910); padding: 20px; color: white; display: flex; justify-content: space-between; align-items: center; }
+        header h1 { margin: 0; font-size: 28px; }
+        header a { background-color: #e74c3c; padding: 8px 18px; border-radius: 5px; color: white; text-decoration: none; font-weight: bold; }
+        header a:hover { background-color: #c0392b; }
+        .container { max-width: 1100px; margin: 30px auto; background: white; padding: 25px; border-radius: 10px; box-shadow: 0px 4px 15px rgba(0,0,0,0.1); }
+        .course-info { background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #f39c12; }
+        .course-info h2 { color: #2c3e50; margin-bottom: 10px; }
+        .course-info p { color: #7f8c8d; margin: 5px 0; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 12px; border-bottom: 1px solid #ddd; text-align: left; vertical-align: top; }
+        th { background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%); color: white; text-transform: uppercase; font-weight: 600; }
+        tr:hover { background: #fef5e7; }
+        ul { margin: 0; padding-left: 18px; }
+        .empty-state { text-align: center; padding: 40px; color: #7f8c8d; }
+        .empty-state i { font-size: 3rem; color: #bdc3c7; margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+<header>
+    <h1><i class="fas fa-users"></i> Registered Students</h1>
+    <a href="/admin/dashboard">⬅ Back to Dashboard</a>
+</header>
+
+<div class="container">
+    <div class="course-info" th:if="${course}">
+        <h2 th:text="${course.title}">Course Title</h2>
+        <p><strong>Code:</strong> <span th:text="${course.courseCode}">CODE</span></p>
+        <p><strong>Description:</strong> <span th:text="${course.description}">Description</span></p>
+        <p><strong>Available Seats:</strong> <span th:text="${course.seats}">0</span></p>
+    </div>
+
+    <div th:if="${students != null and !students.isEmpty()}">
+        <table>
+            <thead>
+            <tr>
+                <th>Student Name</th>
+                <th>Email</th>
+                <th>Registered Courses</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="student : ${students}">
+                <td th:text="${student.name}">John Doe</td>
+                <td th:text="${student.email}">john@example.com</td>
+                <td>
+                    <ul>
+                        <li th:each="course : ${student.registeredCourses}"
+                            th:text="${course.title} + ' (' + course.courseCode + ')'">
+                            Course Title (CODE)
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div th:if="${students == null or students.isEmpty()}" class="empty-state">
+        <i class="fas fa-user-slash"></i>
+        <h2>No Students Registered</h2>
+        <p>No students have registered for this course yet.</p>
+    </div>
+</div>
+</body>
+</html>

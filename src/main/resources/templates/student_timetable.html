@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Timetable</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+    body { background: linear-gradient(135deg, #f4f6f9 0%, #e9ecef 100%); padding: 30px; }
+
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      background: white;
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+    }
+
+    h1 { text-align: center; color: #2c3e50; margin-bottom: 20px; font-weight: 700; }
+
+    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 20px; border: none; border-radius: 50px;
+      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      color: white; text-decoration: none; font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(79,172,254,0.4); }
+    .btn-back { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      text-align: center;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+
+    .grid div {
+      padding: 15px;
+      border: 1px solid #eee;
+    }
+
+    .header-day {
+      background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+      color: white;
+      font-weight: 600;
+    }
+
+    .time-slot {
+      background: #f8f9fa;
+      font-weight: 600;
+      color: #34495e;
+    }
+
+    .course-box {
+      background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+      border-radius: 8px;
+      padding: 10px;
+      font-size: 0.9rem;
+      color: #2c3e50;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      color: white;
+      margin-top: 5px;
+    }
+    .badge-available { background: #28a745; }
+    .badge-full { background: #dc3545; }
+
+    .empty-state {
+      text-align: center;
+      padding: 50px 20px;
+      color: #7f8c8d;
+    }
+    .empty-state i { font-size: 3rem; color: #bdc3c7; margin-bottom: 15px; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1><i class="fas fa-calendar-week"></i> My Timetable</h1>
+    <a href="/student/dashboard" class="btn btn-back"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+  </div>
+
+  <!-- Timetable Grid -->
+  <div th:if="${registeredCourses != null and !registeredCourses.isEmpty()}">
+    <div class="grid">
+      <!-- Header Row -->
+      <div class="time-slot header-day">Time</div>
+      <div class="header-day">Monday</div>
+      <div class="header-day">Tuesday</div>
+      <div class="header-day">Wednesday</div>
+      <div class="header-day">Thursday</div>
+      <div class="header-day">Friday</div>
+
+      <!-- Morning Row -->
+      <div class="time-slot">Morning</div>
+      <div th:each="day : ${#numbers.sequence(1,5)}">
+        <div class="course-box" th:if="${#lists.size(registeredCourses) > 0}" th:each="course : ${registeredCourses}">
+          <span th:text="${course.courseCode}">CS101</span> -
+          <span th:text="${course.title}">Intro to CS</span>
+          <div>
+            <span th:if="${course.seats > 0}" class="badge badge-available" th:text="${course.seats} + ' seats'">10 seats</span>
+            <span th:if="${course.seats <= 0}" class="badge badge-full">Full</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Afternoon Row -->
+      <div class="time-slot">Afternoon</div>
+      <div th:each="day : ${#numbers.sequence(1,5)}">
+        <div class="course-box" th:if="${#lists.size(registeredCourses) > 1}" th:each="course : ${registeredCourses}">
+          <span th:text="${course.courseCode}">CS102</span> -
+          <span th:text="${course.title}">Data Structures</span>
+          <div>
+            <span th:if="${course.seats > 0}" class="badge badge-available" th:text="${course.seats} + ' seats'">10 seats</span>
+            <span th:if="${course.seats <= 0}" class="badge badge-full">Full</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Evening Row -->
+      <div class="time-slot">Evening</div>
+      <div th:each="day : ${#numbers.sequence(1,5)}">
+        <div class="course-box" th:if="${#lists.size(registeredCourses) > 2}" th:each="course : ${registeredCourses}">
+          <span th:text="${course.courseCode}">CS103</span> -
+          <span th:text="${course.title}">Algorithms</span>
+          <div>
+            <span th:if="${course.seats > 0}" class="badge badge-available" th:text="${course.seats} + ' seats'">10 seats</span>
+            <span th:if="${course.seats <= 0}" class="badge badge-full">Full</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div th:if="${registeredCourses == null or registeredCourses.isEmpty()}" class="empty-state">
+    <i class="fas fa-calendar-times"></i>
+    <h2>No Courses in Your Timetable</h2>
+    <p>You haven’t registered for any courses yet. Once you register, your schedule will appear here.</p>
+    <a href="/student/dashboard" class="btn" style="margin-top: 15px;">
+      <i class="fas fa-book"></i> Browse Courses
+    </a>
+  </div>
+</div>
+</body>
+</html>

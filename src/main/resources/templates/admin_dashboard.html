@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%); margin: 0; padding: 20px; }
+        .container { max-width: 1200px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0px 6px 18px rgba(0,0,0,0.1); }
+        h1, h2 { margin-bottom: 15px; color: #2c3e50; }
+        .btn { display: inline-block; padding: 8px 14px; font-size: 14px; font-weight: bold; border-radius: 6px; text-decoration: none; transition: all 0.3s ease; margin-right: 5px; margin-bottom: 10px; }
+        .btn-add { background: #2980b9; color: white; }
+        .btn-add:hover { background: #1f6391; }
+        .btn-edit { background: #27ae60; color: white; }
+        .btn-edit:hover { background: #1e8449; }
+        .btn-delete { background: #e74c3c; color: white; }
+        .btn-delete:hover { background: #c0392b; }
+        .btn-view { background: #8e44ad; color: white; }
+        .btn-view:hover { background: #6c3483; }
+        .btn-logout { background: #e74c3c; color: white; float: right; }
+        .btn-logout:hover { background: #c0392b; }
+        .btn-program { background: #f39c12; color: white; }
+        .btn-program:hover { background: #d68910; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; background: white; margin-bottom: 30px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background: #34495e; color: white; }
+        tr:hover { background: #f2f6fc; }
+        .program-section { background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #3498db; }
+        .program-title { color: #2c3e50; margin-top: 0; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Admin Dashboard</h1>
+    <a href="/logout" class="btn btn-logout">Logout</a>
+
+    <!-- Program Management Buttons -->
+    <a href="/admin/program/add" class="btn btn-program">➕ Add New Program</a>
+    <a href="/admin/program/list" class="btn btn-program">📋 View All Programs</a>
+    <a href="/admin/add_course" class="btn btn-add">➕ Add New Course</a>
+
+    <!-- Display Programs and Their Courses -->
+    <h2>Programs and Courses</h2>
+
+    <div th:each="program : ${programs}">
+        <div class="program-section">
+            <!-- FIXED: Changed from program.programName to program.name -->
+            <h3 class="program-title" th:text="${program.name}">Program Name</h3>
+
+            <a th:href="@{'/admin/program/' + ${program.id} + '/course/add'}"
+               class="btn btn-add">➕ Add Course to This Program</a>
+
+            <!-- FIXED: Use a safer approach to check if courses exist -->
+            <table th:if="${program.courses != null and !program.courses.isEmpty()}">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Code</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Seats</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="course : ${program.courses}">
+                    <td th:text="${course.id}">1</td>
+                    <td th:text="${course.courseCode}">CS101</td>
+                    <td th:text="${course.title}">Intro to Programming</td>
+                    <td th:text="${course.description}">Learn programming basics</td>
+                    <td th:text="${course.seats}">30</td>
+                    <td>
+                        <!-- Edit -->
+                        <a th:href="@{'/admin/edit-course/' + ${course.id}}" class="btn btn-edit">✏ Edit</a>
+                        <!-- Delete -->
+                        <a th:href="@{'/admin/delete-course/' + ${course.id}}"
+                           class="btn btn-delete"
+                           onclick="return confirm('Are you sure you want to delete this course?');">🗑 Delete</a>
+                        <!-- View Students -->
+                        <a th:href="@{'/admin/course/' + ${course.id} + '/students'}" class="btn btn-view">👥 View Students</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <!-- FIXED: Use a safer approach to check if courses are empty -->
+            <p th:if="${program.courses == null or program.courses.isEmpty()}"
+               style="color: #7f8c8d; font-style: italic; padding: 10px;">
+                No courses available for this program yet.
+            </p>
+        </div>
+    </div>
+
+    <div th:if="${programs == null or programs.isEmpty()}">
+        <p style="color: #7f8c8d; font-style: italic; text-align: center; padding: 20px;">
+            No programs available. Add a program to get started.
+        </p>
+    </div>
+</div>
+</body>
+</html>

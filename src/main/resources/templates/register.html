@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${role} != null ? ${role} + ' Registration' : 'Registration'">Registration</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; }
+        .register-container { background: rgba(255, 255, 255, 0.95); padding: 40px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); width: 100%; max-width: 450px; }
+        .logo { text-align: center; font-size: 2.5rem; color: #667eea; margin-bottom: 20px; }
+        h2 { text-align: center; margin-bottom: 30px; color: #333; font-weight: 600; text-transform: capitalize; }
+        .input-group { margin-bottom: 25px; position: relative; }
+        .input-group i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #667eea; font-size: 1.1rem; }
+        input[type="text"], input[type="email"], input[type="password"] { width: 100%; padding: 15px 15px 15px 45px; border: 2px solid #e1e5ee; border-radius: 50px; font-size: 1rem; transition: all 0.3s ease; outline: none; }
+        input:focus { border-color: #667eea; box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); }
+        button { width: 100%; padding: 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 50px; font-size: 1.1rem; font-weight: 500; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 5px 15px rgba(118, 75, 162, 0.3); }
+        button:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(118, 75, 162, 0.4); }
+        .error { color: #e74c3c; text-align: center; margin: 15px 0; padding: 10px; background: rgba(231, 76, 60, 0.1); border-radius: 10px; border-left: 4px solid #e74c3c; }
+        .links { text-align: center; margin-top: 25px; }
+        .links a { color: #667eea; text-decoration: none; margin: 0 10px; transition: color 0.3s ease; font-weight: 500; }
+        .links a:hover { color: #764ba2; text-decoration: underline; }
+        .role-badge { display: inline-block; padding: 5px 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 20px; font-size: 0.9rem; margin-left: 10px; text-transform: uppercase; font-weight: 500; }
+    </style>
+</head>
+<body>
+<div class="register-container">
+    <div class="logo"><i class="fas fa-graduation-cap"></i></div>
+
+    <h2><span th:text="${role} != null ? ${role} + ' Registration' : 'Registration'"></span><span th:if="${role}" class="role-badge" th:text="${role}"></span></h2>
+
+    <form th:action="@{/student/register}" method="post">
+        <input type="hidden" name="role" th:value="${role}">
+        <div class="input-group"><i class="fas fa-user"></i><input type="text" name="name" placeholder="Full Name" required></div>
+        <div class="input-group"><i class="fas fa-envelope"></i><input type="email" name="email" placeholder="Email Address" required></div>
+        <div class="input-group"><i class="fas fa-lock"></i><input type="password" name="password" placeholder="Password" required></div>
+        <button class= "SubmitBtn"  type="submit">Create Account</button>
+    </form>
+
+    <p th:if="${error}" th:text="${error}" class="error"></p>
+
+    <div class="links">
+        <a th:href="@{/login(role=${role})}">I already have an account</a><br>
+        <a href="/home">Back to Home</a>
+    </div>
+</div>
+</body>
+</html>
